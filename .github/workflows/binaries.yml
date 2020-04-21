@@ -9,24 +9,41 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [Darwin, Linux]
     steps:
-      - name: Download a file
+      - name: remove old files
+        run: rm -rf Linux Darwin
+      - name: Download a linix file
         if: startsWith(github.ref, 'refs/tags/')
         uses: carlosperate/download-file-action@v1.0.3
-        id: download-binary
         with:
-            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/${{ matrix.platform }}/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
+            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
-            location: './${{ matrix.platform }}'
-      - name:  Tar file
+            location: './Linux'
+      - name: Download a mac file
         if: startsWith(github.ref, 'refs/tags/')
-        run: tar -C ${{ matrix.platform }} -czvf ${{ matrix.platform }}.tar.gz near-vm-runner-standalone
-      - name: Release
-        uses: fnkr/github-action-ghr@v1
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Darwin/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
+            file-name: 'near-vm-runner-standalone'
+            location: './Darwin'
+      - name:  Make Executable
+        if: startsWith(github.ref, 'refs/tags/')
+        run: chmod +x Linux/near-vm-runner-standalone && chmod +x Darwin/near-vm-runner-standalone
+      - name:  Tar linux file
+        if: startsWith(github.ref, 'refs/tags/')
+        run: tar -C Linux -czvf Linux.tar.gz near-vm-runner-standalone
+      - name:  Tar macos file
+        if: startsWith(github.ref, 'refs/tags/')
+        run: tar -C Darwin -czvf Darwin.tar.gz near-vm-runner-standalone
+      - name: Release Linux
         if: startsWith(github.ref, 'refs/tags/')
         env:
-          GHR_PATH: ${{ matrix.platform }}.tar.gz
+          GHR_PATH: Linux.tar.gz
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: fnkr/github-action-ghr@v1
+      - name: Release Macos
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GHR_PATH: Darwin.tar.gz
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: fnkr/github-action-ghr@v1
