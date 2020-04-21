@@ -20,11 +20,11 @@ jobs:
         with:
             file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/${{ matrix.platform }}/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
-            location: './${{ matrix.platform }}'
+            location: './${{ matrix.platform }}/${{ matrix.platform }}'
       - name: Release
         uses: fnkr/github-action-ghr@v1
         if: startsWith(github.ref, 'refs/tags/')
         env:
-          GHR_COMPRESS: .tar.gz
+          GHR_COMPRESS: tar.gz
           GHR_PATH: ${{ matrix.platform }}/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
