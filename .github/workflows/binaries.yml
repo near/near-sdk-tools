@@ -1,12 +1,13 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Add Binaries to Release
 
 on:
   push:
     branches: [ master ]
 jobs:
+     
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -15,14 +16,13 @@ jobs:
         platform: [Darwin, Linux]
     steps:
       - name: Download a file
+        if: startsWith(github.ref, 'refs/tags/')
         uses: carlosperate/download-file-action@v1.0.3
         id: download-binary
         with:
             file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/${{ matrix.platform }}/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
             location: './${{ matrix.platform }}'
-      - name: Print the file path
-        run: echo "The file was downloaded to ${{ steps.download-binary.outputs.file-path }}"
       - name: Release
         uses: fnkr/github-action-ghr@v1
         if: startsWith(github.ref, 'refs/tags/')
