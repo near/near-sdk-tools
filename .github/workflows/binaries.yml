@@ -3,9 +3,7 @@
 
 name: Add Binaries to Release
 
-on:
-  push:
-    branches: [ master ]
+on: push
 jobs:
      
   release:
