@@ -18,23 +18,23 @@ jobs:
         with:
             file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
-            location: './Linux'
+            location: './Linux/Linux'
       - name: Download a mac file
         if: startsWith(github.ref, 'refs/tags/')
         uses: carlosperate/download-file-action@v1.0.3
         with:
             file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Darwin/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
-            location: './Darwin'
+            location: './Darwin/Darwin'
       - name:  Make Executable
         if: startsWith(github.ref, 'refs/tags/')
         run: chmod +x Linux/near-vm-runner-standalone && chmod +x Darwin/near-vm-runner-standalone
       - name:  Tar linux file
         if: startsWith(github.ref, 'refs/tags/')
-        run: tar -C Linux -czvf Linux.tar.gz near-vm-runner-standalone
+        run: tar -C Linux -czvf Linux.tar.gz Linux
       - name:  Tar macos file
         if: startsWith(github.ref, 'refs/tags/')
-        run: tar -C Darwin -czvf Darwin.tar.gz near-vm-runner-standalone
+        run: tar -C Darwin -czvf Darwin.tar.gz Darwin
       - name: Release Linux
         if: startsWith(github.ref, 'refs/tags/')
         env:
