@@ -5,10 +5,11 @@ function getPlatform() {
     const type = os.type();
     const arch = os.arch();
 
-    if (type === 'Windows_NT' && arch === 'x64') return 'win64';
-    if (type === 'Windows_NT') return 'win32';
-    if (type === 'Linux' && arch === 'x64') return 'linux';
-    if (type === 'Darwin' && arch === 'x64') return 'macos';
+    // if (type === 'Windows_NT' && arch === 'x64') return 'win64';
+    // TODO support windows
+    if (type === 'Windows_NT') throw new Error("Don't support windows");
+    if (type === 'Linux' && arch === 'x64') return 'Linux';
+    if (type === 'Darwin' && arch === 'x64') return 'Darwin';
 
     throw new Error(`Unsupported platform: ${type} ${arch}`);
 }
@@ -16,7 +17,7 @@ function getPlatform() {
 function getBinary() {
     const platform = getPlatform();
     const version = require('./package.json').version;
-    const url = `https://github.com/near/near-sdk-tools/releases/download/v${ version }/near-vm-${ platform }.tar.gz`;
+    const url = `https://github.com/near/near-sdk-tools/releases/download/v${ version }/${ platform }.tar.gz`;
     const name = 'near-vm-runner-standalone';
     return new Binary(url, { name });
 }
