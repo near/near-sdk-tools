@@ -7,7 +7,10 @@ function getPlatform() {
 
     // if (type === 'Windows_NT' && arch === 'x64') return 'win64';
     // TODO support windows
-    if (type === 'Windows_NT') throw new Error("Don't support windows");
+    if (type === 'Windows_NT') {
+        console.error("Don't support windows");
+        exit(0);
+    }
     if (type === 'Linux' && arch === 'x64') return 'Linux';
     if (type === 'Darwin' && arch === 'x64') return 'Darwin';
 
