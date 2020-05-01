@@ -1,8 +1,6 @@
-function getBinary() {
-  try {
-      const getBinary = require('./getBinary');
-      return getBinary();
-  } catch (err) { }
-}
-
-getBinary().uninstall();
+try {
+    const getBinary = require('./getBinary');
+    if (getBinary != undefined) {
+      getBinary.uninstall();
+    }
+} catch (err) { }
