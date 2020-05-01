@@ -11,15 +11,28 @@ function binExists() {
   return fs.existsSync(binPath);
 }
 
-if (!binExists()) {
-  binary.install();
-  if (!binExists()) {
-    throw new Error("binary failed to be installed to " + binPath);
+function run() {
+  if (process.argv.length < 3) {
+    process.argv.push("--help");
   }
+  binary.run();
 }
 
-if (process.argv.length < 3) {
-  process.argv.push("--help");
+function install() {
+  binary.install().then(() => {
+    setTimeout(function() {
+      fs.exists(binPath, (exists) => {
+        if (!exists) {
+          throw new Error("binary failed to be installed to " + binPath);
+        }
+        run();
+      });
+  }, 1000);
+  });
 }
 
-binary.run();
+if (!binExists()) {
+  install();
+} else {
+  run();
+}
