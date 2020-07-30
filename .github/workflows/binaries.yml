@@ -5,7 +5,6 @@ name: Add Binaries to Release
 
 on: push
 jobs:
-     
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -16,14 +15,14 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: carlosperate/download-file-action@v1.0.3
         with:
-            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
+            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux/master/6196ca7631f524a61c50476f9110ce130f47211e/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
             location: './Linux/Linux'
       - name: Download a mac file
         if: startsWith(github.ref, 'refs/tags/')
         uses: carlosperate/download-file-action@v1.0.3
         with:
-            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Darwin/master/49ee01d20444219ce98bfbc79c6694fa69302bc1/near-vm-runner-standalone'
+            file-url: 'http://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Darwin/master/6196ca7631f524a61c50476f9110ce130f47211e/near-vm-runner-standalone'
             file-name: 'near-vm-runner-standalone'
             location: './Darwin/Darwin'
       - name:  Make Executable
