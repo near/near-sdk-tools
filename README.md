@@ -1,3 +1,5 @@
+*Deprecation warning: This project is not maintained. Use https://github.com/near/workspaces instead.*
+
 # near-sdk-tools
 Collection of tools to support testing smart contracts.
 
